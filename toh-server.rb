@@ -1,0 +1,18 @@
+require 'socket'
+require 'data_mapper'
+
+$PORT = 12345
+
+puts "Tale of Heads server v0.1"
+puts "Copyright 2012 Son Holo son.sonholo.holo@gmail.com"
+puts "All rights reserved"
+
+srv = TCPServer.open($PORT)
+client = srv.accept
+
+data = ""
+recv_length = 56
+while (tmp = client.recv(recv_length))
+	data += tmp
+	break if tmp_length < recv_length
+end

@@ -1,0 +1,30 @@
+require './game/hero.rb'
+
+puts "Welcome to Tale of Heads, Hero!"
+
+# hero name
+puts "What is thy name?"
+name = gets.chomp
+
+# hero gender
+gends = ''
+until (['M','F'].include? gends) do
+	puts "What is thy gender? (M/F)"
+	gends = gets[0].upcase
+end
+gender = gends == 'M' ? :male : :female
+
+# hero class
+clas = ''
+until ($CLASSES.include? clas) do
+	puts "What is thy class?"
+	clas = gets[0].downcase.to_sym
+end
+
+hero = Hero.new(name, gender, clas)
+
+puts "So it shall be. You are the #{hero.gender.to_s} #{hero.clas.to_s.capitalize} known as #{hero.name}."
+
+puts hero
+
+#
