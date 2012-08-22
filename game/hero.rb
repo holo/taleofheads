@@ -17,27 +17,31 @@ class Clas # i have to cut off a letter so as not to upset ruby lol
 		@attrs = []
 	end
 	
-	def self.warrior
-		c = Clas.new('warrior')
-		c.spec = :combat
+	def to_s
+		@name
+	end
+	def to_sym
+		@name.to_sym
+	end
+end
+def gen_clas(clas)
+	c = Clas.new(clas.to_s)
+	case clas
+	when :warrior
 		c.maj = [:ath, :blk, :hva, :lbl, :mda]
 		c.min = [:arm, :axe, :blu, :spr, :mar]
-		c.attrs = [:end, :str]; c
-	end
-	def self.mage
-		c = Clas.new('mage')
-		c.spec = :magic
+		c.attrs = [:end, :str]
+	when :mage
 		c.maj = [:alt, :des, :ill, :mys, :res]
 		c.min = [:alc, :con, :enc, :una, :sbl]
-		c.attrs = [:int, :wil]; c
-	end
-	def self.thief
-		c = Clas.new('thief')
+		c.attrs = [:int, :wil]
+	when :thief
 		c.spec = :stealth
 		c.maj = [:acr, :lta, :sec, :sbl, :snk]
 		c.min = [:ath, :h2h, :mar, :mer, :spe]
-		c.attrs = [:agl, :spd]; c
+		c.attrs = [:agl, :lck]
 	end
+	return c
 end
 
 class Hero
@@ -56,6 +60,11 @@ class Hero
 			:str		=> 50,	# strength; how much you can carry, and melee weapon damage
 			:wil		=> 50	# willpower; ability to cast spells effectively, and resist magic
 		}
+
+		# favoured attributes get a +10 bonus
+		@clas.attrs.each do |att|
+			@stats[att] += 10
+		end
 
 		update_dstats # we already have a method for updating derived stats
 		
@@ -95,13 +104,25 @@ class Hero
 			}
 		}
 		
-		# TODO: calculate skills based on class here
+=begin
+		# major skills start at 30, minor at 15
+		@skills.each do |spec, skills|
+			skills.each do |skill|
+				@skills[spec][skill] = 30 if @clas.maj.include? skill
+				@skills[spec][skill] = 15 if @clas.min.include? skill
+			end
+		end
+		# skills within specialisation get an added bonus
+		@skills[@clas.spec].each do |skill, val|
+			@skills[@clas.spec][skill] += 5
+		end
+=end
 
 		@cstats = { # current stats; respresent character's current state
-			:hp			=> @dstats[:maxhp],	# current HP / health
-			:mp			=> @dstats[:maxmp],	# current MP / mana
-			:fat		=> @dstats[:maxfat],	# current FAT / fatigue
-			:enc		=> 0								# current ENC / encumberance
+			:hp			=> @dstats[:maxhp],	 # current HP / health
+			:mp			=> @dstats[:maxmp],	 # current MP / mana
+			:fat		=> @dstats[:maxfat], # current FAT / fatigue
+			:enc		=> 0								 # current ENC / encumberance
 		}
 	end
 
@@ -118,7 +139,7 @@ class Hero
 
 	def update_enc
 		# recalculate current ENC, based on inv
-		# TODO: implement
+		# TODO: implement once inv is added
 	end
 
 	def to_s
