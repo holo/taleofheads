@@ -25,6 +25,6 @@ hero = Hero.new(name, gender, gen_clas(clas))
 
 puts "So it shall be. You are the #{hero.gender.to_s} #{hero.clas.to_s.capitalize} known as #{hero.name}."
 
-puts hero
+#puts hero
 
 #
