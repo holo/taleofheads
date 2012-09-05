@@ -1,4 +1,27 @@
+require 'socket'
+require './toh.rb'
 require './game/hero.rb'
+
+class TOHClient
+	def initialize
+		@sock = UDPSocket.new
+	end
+	
+	def connect(ip, port)
+		@ip = ip
+		@port = port
+	end
+	
+	def go
+		@sock.send("hello", 0, @ip.to_s, @port)
+	end
+end
+
+cli = TOHClient.new
+cli.connect($IP, $PORT)
+cli.go
+
+=begin
 
 puts "Welcome to Tale of Heads, Hero!"
 
@@ -26,5 +49,7 @@ hero = Hero.new(name, gender, gen_clas(clas))
 puts "So it shall be. You are the #{hero.gender.to_s} #{hero.clas.to_s.capitalize} known as #{hero.name}."
 
 #puts hero
+
+=end
 
 #

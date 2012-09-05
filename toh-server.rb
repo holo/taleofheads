@@ -1,18 +1,29 @@
 require 'socket'
-require 'data_mapper'
-
-$PORT = 12345
+#require 'data_mapper'
+require './toh.rb'
 
 puts "Tale of Heads server v0.1"
 puts "Copyright 2012 Son Holo son.sonholo.holo@gmail.com"
 puts "All rights reserved"
+puts
 
-srv = TCPServer.open($PORT)
-client = srv.accept
-
-data = ""
-recv_length = 56
-while (tmp = client.recv(recv_length))
-	data += tmp
-	break if tmp_length < recv_length
+class TOHServer
+	def initialize
+	puts "Server initializing..."
+		@sock = UDPSocket.new
+		@sock.bind(nil, $PORT)
+	end
+	
+	def go
+		puts "Server started!"
+		puts
+		
+		while true do
+			text, sender = @sock.recvfrom(16)
+			puts text
+		end
+	end
 end
+
+serv = TOHServer.new
+serv.go
